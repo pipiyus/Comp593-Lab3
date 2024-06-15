@@ -9,6 +9,9 @@ Parameters:
   sales_csv_path = Full path of the sales data CSV file
 """
 import pandas as pd
+import os
+import sys
+from datetime import data
 
 def main():
     sales_csv_path = get_sales_csv_path()
@@ -49,11 +52,24 @@ def process_sales_data(sales_csv_path, orders_dir_path):
         orders_dir_path (str): Path of orders directory
     """
     # TODO: Import the sales data from the CSV file into a DataFrame
+    sales_df = pd.read_csv(sales_csv_path)
+    
     # TODO: Insert a new "TOTAL PRICE" column into the DataFrame
+    sales_df.insert(
+        7, "TOTAL PRICE", sales_df["ITEM QUANTITY"] * sales_df["ITEM PRICE"]
+    )
+    
     # TODO: Remove columns from the DataFrame that are not needed
-    # TODO: Groups orders by ID and iterate 
+    sales_df.drop(colums=["ADDRESS", "CITY", "STATE","POSTAL CODE", "COUNTRY"], inplace=True)
+     
+    # TODO: Groups orders by ID and iterate
+    group_dataorder = sales_df.groupby("ORDER_ID")
+     
         # TODO: Remove the 'ORDER ID' column
+    order_data = order_data.Remove("ORDER ID", axis=1)
+        
         # TODO: Sort the items by item number
+    order_data = order_data.sort.by("ITEM NUMBER")
         # TODO: Append a "GRAND TOTAL" row
         # TODO: Determine the file name and full path of the Excel sheet
         # TODO: Export the data to an Excel sheet
